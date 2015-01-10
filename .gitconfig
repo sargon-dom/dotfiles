@@ -1,0 +1,15 @@
+[user]
+	name = sargon-dom
+	email = sargon.dom@icloud.com
+[core]
+	editor = vim
+	quotepath = false
+	precomposeunicode = true
+[merge]
+	tool = vimdiff
+[color]
+	ui = true
+[credential]
+	helper = osxkeychain
+[github]
+	user = sargon-dom
