@@ -1,35 +1,64 @@
-# Vim like keybind
+### 環境変数
+
+# 言語
+export LANG=ja_JP.UTF-8
+# エディタ
+export EDITOR='vim'
+# ページャ
+export PAGER='less'
+# grepオプションでバイナリを無視、カラーリング
+export GREP_OPTIONS="--binary-files=without-match --color=auto"
+
+# Vimキーバインド
 bindkey -v
 
-# 環境変数の設定で重複パスを登録しないようにする
-typeset -U path cdpath fpath manpath
-
-# pathに~/toolsを追加
-path=($HOME/tools(N-/) ${path})
-
-# prompt
+# 色設定
 autoload colors
 colors
+
+# プロンプト
 local p_cdir="%B%F{magenta}[%~]%f%b"$'\n'
 local p_info="%n@%m"
 local p_mark="%B%(?,%F{green},%F{yellow})%(!,#,>)%f%b"
 PROMPT=" $p_cdir$p_info $p_mark "
 
-# 文字コードの設定
-export LANG=ja_JP.UTF-8
+### エイリアス
 
-# default editor
-export EDITOR='vim'
+# クイック移動
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
 
-# 補完設定を読み込んで設定する
+# Git
+alias gs='git status'
+alias ga='git add .'
+alias gc='git commit -m' # requires you to type a commit message
+alias gp='git push'
+alias grm='git rm $(git ls-files --deleted)'
+
+# lsカラーリング
+case "${OSTYPE}" in
+  # Mac OSX
+  darwin*) alias ls='gls --color' ;;
+  # Linux, Cygwin
+  linux*|cygwin*) alias ls='ls --color=auto' ;;
+esac
+
+### 補完
+
+# 補完設定を読み込んで設定
 autoload -U compinit
 compinit
 # 補完候補を詰めて表示する
 setopt list_packed
 # 補完候補表示時にビープ音を鳴らさない
 setopt nolistbeep
-# 入力したコマンド名が間違っている場合には修正
-setopt correct
+
+# 大小文字を区別しない
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+### 履歴
 
 # 履歴ファイルの保存先
 export HISTFILE=${HOME}/.zsh_history
@@ -58,6 +87,8 @@ setopt hist_no_store
 # 補完時にヒストリを自動的に展開
 setopt hist_expand
 
+### cd
+
 # cdコマンドの設定
 # ディレクトリ名だけで移動する
 setopt auto_cd
@@ -65,18 +96,11 @@ setopt auto_cd
 setopt auto_pushd
 # pushdで同じディレクトリを重複してpushしない
 setopt pushd_ignore_dups
+# 自動でlsする
+function chpwd() { ls }
+
+### rm
 
 # rm * を実行する前に確認する
 setopt rmstar_wait
-
-# coloring ls
-case "${OSTYPE}" in
-  # Mac OSX
-  darwin*) alias ls='gls --color' ;;
-  # Linux, Cygwin
-  linux*|cygwin*) alias ls='ls --color=auto' ;;
-esac
-
-# 大小文字を区別しない
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 

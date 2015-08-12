@@ -3,7 +3,9 @@ if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-" packages
+" ---------------------------
+" Packages
+" ---------------------------
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'vim-jp/vimdoc-ja'
@@ -12,111 +14,150 @@ NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'mhinz/vim-startify'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler.vim'
-NeoBundle 'lambdalisue/vim-gista'
-NeoBundle 'vim-scripts/taglist.vim'
-NeoBundle 'tpope/vim-fugitive'
 call neobundle#end()
-
 filetype plugin indent on
 NeoBundleCheck
 
-" vim-gista
-let g:gista#github_user = 'sargon-dom'
+" ---------------------------
+" File
+" ---------------------------
+" backup
+set nobackup
+" format
+set encoding=utf-8
+set fileencodings=utf-8,euc-jp,sjis,cp932
+set fileformats=unix,mac,dos
 
+" ---------------------------
+" Display
+" ---------------------------
 " colorscheme
 colorscheme molokai
 syntax on
-
 " font
 set antialias
 " 256 color
 set t_Co=256
 " unicode sign uses twice the width
 set ambiwidth=double
-
-" file
-set encoding=utf-8  " vim encode
-set fileencodings=utf-8,euc-jp,sjis,cp932
-set fileformats=unix,mac,dos
-
-" display
+" visible tab (+---+---+---)
+set list
+set listchars=tab:+-
+" line number
 set number
+" show status (for lightline.vim)
 set laststatus=2
 set showtabline=2
 set showcmd
 set wrap
 set display+=lastline
+" no beep
 set visualbell
+" cursor line
+set cursorline
 
+" ---------------------------
+" Search
+" ---------------------------
 " search
 set ignorecase
 set smartcase
-set hlsearch  " show search highlight
+" visible search highlight
+set hlsearch
+" clear highlight
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
+" grep auto open quickfix
+autocmd QuickFixCmdPost *grep* cwindow
 
-" indent style
+" ---------------------------
+" Edit
+" ---------------------------
+" indent
 set cindent
-set tabstop=4 shiftwidth=4 softtabstop=4  " size of indent
-
+" size of indent
+set tabstop=4 shiftwidth=4 softtabstop=4
 " backspace
 set backspace=indent,eol,start
-
 " yank & paste using clipboard
 set clipboard=unnamed,autoselect
-
-" omni
-set completeopt=menuone
-inoremap <Nul> <C-x><C-o>
-
-" flush highlight
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
-
-" ctags
-nnoremap <f5> :!ctags -R<CR>
-
-" draw line
-inoreabbrev <expr> dl repeat('-', 65 - col('.'))
-
-" expand directory path
-cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
-
 " espace insert mode
 inoremap <silent> <C-j> <ESC>
-
-" commentout toggle
-nmap <Leader>c <Plug>(caw:i:toggle)
-vmap <Leader>c <Plug>(caw:i:toggle)
-
-" ignore keymap
-nnoremap qqq: <ESC>q:
-nnoremap qqq/ <ESC>q/
-nnoremap q: <Nop>
-nnoremap q/ <Nop>
-nnoremap q? <Nop>
-
 " keep cursor's column position after buffer switch
 augroup vimrcEx
 	au BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
 				\ exe "normal g`\"" | endif
 augroup END
+" draw line
+inoreabbrev <expr> dl repeat('-', 32 - col('.'))
+" commentout toggle
+nmap <Leader>c <Plug>(caw:i:toggle)
+vmap <Leader>c <Plug>(caw:i:toggle)
 
-" default explorer
-let g:vimfiler_as_default_explorer = 1
-" vimfiler ignore pattern
-let g:vimfiler_ignore_pattern = '\(^\.\|\~$\|\.pyc$\|\.[oad]$\)'
-" vimfiler toggle
-nnoremap <silent> <C-e> :VimFilerExplorer<CR>
+" ---------------------------
+" Completion
+" ---------------------------
+" omni
+set completeopt=menuone
+inoremap <Nul> <C-x><C-o>
+" ctags
+nnoremap <f5> :!ctags -R<CR>
+" expand directory path
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-" taglist
-let Tlist_Show_One_File = 1
-let Tlist_Use_Right_Window = 1
-let Tlist_Exit_OnlyWindow = 1
-nnoremap <silent> <leader>l :TlistToggle<CR>
-
-" next tab
+" ---------------------------
+" Explore
+" ---------------------------
+" wildignore
+set wildignore+=*.o,*.obj,*.so,*.out,*.png,*.jpg,*.zip,*.swp,*.d,*.ogg,*.pbm,*.wav,*mp3,tags,*.taghl,*.DS_Store
+" netrw tree view
+let g:netrw_liststyle = 3
+" netrw ignore
+let g:netrw_list_hide = '\*$,^\.git/$,^bin/$,^obj/$,^tags$,.*\.taghl$,.*\.png,.*\.jpg$,.*\.ogg$,.*\.pbm$,.*\.wav$,.*\.mp3$,.*\.o$,.*\.obj$,.*\.so$,.*\.out$,.*\.d$,.*\.DS_Store$'
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/hiroya/work/recon/episode1'
+let g:netrw_dirhist_2='/Users/hiroya/work/recon/episode1/image'
+let g:netrw_dirhist_3='/Users/hiroya/work/recon/episode1'
+let g:netrw_dirhist_4='/Users/hiroya/work/recon/episode1/image'
+let g:netrw_dirhist_5='/Users/hiroya/work/recon/episode1'
+let g:netrw_dirhist_6='/Users/hiroya/work/recon/episode1/image'
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/hiroya/work/recon/episode1'
+let g:netrw_dirhist_2='/Users/hiroya/work/recon/episode1/image'
+let g:netrw_dirhist_3='/Users/hiroya/work/recon/episode1'
+let g:netrw_dirhist_4='/Users/hiroya/work/recon/episode1/image'
+let g:netrw_dirhist_5='/Users/hiroya/work/recon/episode1'
+let g:netrw_dirhist_6='/Users/hiroya/work/recon/episode1/image'
+" netrw x browser (OSX: open)
+let g:netrw_browsex_viewer = 'open'
+" ctrlp ignore
+let g:ctrlp_custom_ignore = {
+			\ 'dir': '\.(git|hg|svn)$'
+			\}
+" tab next & prev
 nnoremap <silent> <tab> :tabnext<CR>
-" previous tab
 nnoremap <silent> <S-tab> :tabprevious<CR>
+
+" ---------------------------
+" Unite
+" ---------------------------
+" " set prefix
+" nnoremap [unite] <Nop>
+" nmap     f [unite]
+" " buffer list
+" nnoremap <silent> [unite]b :<C-u>Unite -no-split buffer<CR>
+" " file list
+" nnoremap <silent> [unite]f :<C-u>Unite -no-split -buffer-name=files file<CR>
+" " bookmark list
+" nnoremap <silent> [unite]m :<C-u>Unite -no-split bookmark<CR>
+"
+" ---------------------------
+" ignore keymap
+" ---------------------------
+nnoremap qqq: <ESC>q:
+nnoremap qqq/ <ESC>q/
+nnoremap q: <Nop>
+nnoremap q/ <Nop>
+nnoremap q? <Nop>
 

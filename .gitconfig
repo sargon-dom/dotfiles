@@ -1,6 +1,6 @@
 [user]
-	name = sargon-dom
-	email = sargon.dom@icloud.com
+	name = h-kamitomo
+	email = h.kamitomo@me.com
 [core]
 	editor = vim
 	quotepath = false
@@ -12,4 +12,4 @@
 [credential]
 	helper = osxkeychain
 [github]
-	user = sargon-dom
+	user = h-kamitomo
